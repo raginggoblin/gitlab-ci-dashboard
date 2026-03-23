@@ -61,7 +61,7 @@ paths:
       operationId: getProjectsWithPipelines
       summary: Get projects and their pipelines for a group
       tags:
-        - pipelines
+        - projects
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
@@ -103,7 +103,7 @@ paths:
       operationId: getProjectsWithLatestPipeline
       summary: Get latest pipeline per project in a group
       tags:
-       - pipelines
+       - projects
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
@@ -122,7 +122,7 @@ paths:
       operationId: getBranchesWithLatestPipeline
       summary: Get latest pipeline per branch in a project
       tags:
-       - pipelines
+       - branches
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
       responses:
@@ -140,7 +140,7 @@ paths:
       operationId: getSchedulesWithLatestPipelines
       summary: Get schedules with latest pipeline in a group
       tags:
-       - pipelines
+       - schedules
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
