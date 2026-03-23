@@ -1,0 +1,661 @@
+openapi: 3.1.0
+info:
+  title: GitLab CI Dashboard Frontend API
+  version: 1.0.0
+  description: API surface inferred from Angular frontend calls in src/app.
+servers:
+  - url: /
+paths:
+  /api/config:
+    get:
+      operationId: getConfig
+      summary: Get frontend configuration
+      responses:
+        '200':
+          description: Frontend configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiConfig'
+
+  /api/groups:
+    get:
+      operationId: getGroups
+      summary: Get groups
+      responses:
+        '200':
+          description: Groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+
+  /api/branches:
+    get:
+      operationId: getBranches
+      summary: Get branches for a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+      responses:
+        '200':
+          description: Branches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Branch'
+
+  /api/projects/pipelines:
+    get:
+      operationId: getProjectsWithPipelines
+      summary: Get projects and their pipelines for a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdQuery'
+        - $ref: '#/components/parameters/ProjectIdsCsvQuery'
+      responses:
+        '200':
+          description: Projects with pipelines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectPipelines'
+
+  /api/pipelines:
+    get:
+      operationId: getPipelines
+      summary: Get pipelines for a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+        - name: source
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Source'
+      responses:
+        '200':
+          description: Pipelines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+
+  /api/projects/latest-pipelines:
+    get:
+      operationId: getProjectsWithLatestPipeline
+      summary: Get latest pipeline per project in a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdQuery'
+        - $ref: '#/components/parameters/ProjectIdsCsvQuery'
+      responses:
+        '200':
+          description: Projects with latest pipeline
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectPipeline'
+
+  /api/branches/latest-pipelines:
+    get:
+      operationId: getBranchesWithLatestPipeline
+      summary: Get latest pipeline per branch in a project
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+      responses:
+        '200':
+          description: Branches with latest pipeline
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BranchPipeline'
+
+  /api/schedules/latest-pipelines:
+    get:
+      operationId: getSchedulesWithLatestPipelines
+      summary: Get schedules with latest pipeline in a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdQuery'
+        - $ref: '#/components/parameters/ProjectIdsCsvQuery'
+      responses:
+        '200':
+          description: Schedules with latest pipeline
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleProjectPipeline'
+
+  /api/jobs:
+    get:
+      operationId: getJobs
+      summary: Get jobs in a pipeline
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+        - $ref: '#/components/parameters/PipelineIdQuery'
+        - name: scope
+          in: query
+          required: true
+          description: Comma-separated list of status values. Empty string requests all jobs.
+          schema:
+            type: string
+            example: failed,running
+      responses:
+        '200':
+          description: Jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+
+  /api/artifacts:
+    get:
+      operationId: downloadArtifact
+      summary: Download artifacts for a job
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+        - $ref: '#/components/parameters/JobIdQuery'
+      responses:
+        '200':
+          description: Artifact ZIP file
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Artifact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/pipelines/cancel:
+    post:
+      operationId: cancelPipeline
+      summary: Cancel a pipeline
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+        - $ref: '#/components/parameters/PipelineIdQuery'
+      responses:
+        '200':
+          description: Pipeline canceled
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/pipelines/retry:
+    post:
+      operationId: retryPipeline
+      summary: Retry a pipeline
+      parameters:
+        - $ref: '#/components/parameters/ProjectIdQuery'
+        - $ref: '#/components/parameters/PipelineIdQuery'
+      responses:
+        '200':
+          description: Pipeline retried
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/pipelines/start:
+    post:
+      operationId: startPipeline
+      summary: Start a pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartPipelineRequest'
+      responses:
+        '200':
+          description: Pipeline started
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  parameters:
+    GroupIdQuery:
+      name: group_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    ProjectIdQuery:
+      name: project_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    PipelineIdQuery:
+      name: pipeline_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    JobIdQuery:
+      name: job_id
+      in: query
+      required: true
+      schema:
+        type: integer
+    ProjectIdsCsvQuery:
+      name: project_ids
+      in: query
+      required: false
+      description: Comma-separated project IDs.
+      schema:
+        type: string
+        example: '12,34,56'
+
+  schemas:
+    ApiConfig:
+      type: object
+      required:
+        - api_version
+        - read_only
+        - hide_write_actions
+        - page_size_options
+        - default_page_size
+      properties:
+        api_version:
+          type: string
+        read_only:
+          type: boolean
+        hide_write_actions:
+          type: boolean
+        page_size_options:
+          type: array
+          items:
+            type: integer
+        default_page_size:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+    Group:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    Namespace:
+      type: object
+      required:
+        - id
+        - name
+        - path
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        path:
+          type: string
+
+    Project:
+      type: object
+      required:
+        - id
+        - name
+        - default_branch
+        - web_url
+        - topics
+        - namespace
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        default_branch:
+          type: string
+        web_url:
+          type: string
+          format: uri
+        topics:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        namespace:
+          $ref: '#/components/schemas/Namespace'
+
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - name
+        - state
+        - is_admin
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        name:
+          type: string
+        state:
+          type: string
+        is_admin:
+          type: boolean
+
+    Commit:
+      type: object
+      required:
+        - id
+        - author_name
+        - committer_name
+        - committed_date
+        - title
+        - message
+      properties:
+        id:
+          type: string
+        author_name:
+          type: string
+        committer_name:
+          type: string
+        committed_date:
+          type: string
+          format: date-time
+        title:
+          type: string
+        message:
+          type: string
+
+    Status:
+      type: string
+      enum:
+        - created
+        - waiting_for_resource
+        - preparing
+        - pending
+        - running
+        - success
+        - failed
+        - canceled
+        - skipped
+        - manual
+        - scheduled
+
+    Source:
+      type: string
+      enum:
+        - push
+        - web
+        - trigger
+        - schedule
+        - api
+        - external
+        - pipeline
+        - chat
+        - webide
+        - merge_request_event
+        - external_pull_request_event
+        - parent_pipeline
+        - ondemand_dast_scan
+        - ondemand_dast_validation
+
+    Pipeline:
+      type: object
+      required:
+        - id
+        - project_id
+        - status
+        - source
+        - ref
+        - sha
+        - web_url
+        - updated_at
+        - created_at
+      properties:
+        id:
+          type: integer
+        project_id:
+          type: integer
+        coverage:
+          type: number
+        status:
+          $ref: '#/components/schemas/Status'
+        source:
+          $ref: '#/components/schemas/Source'
+        ref:
+          type: string
+        sha:
+          type: string
+        web_url:
+          type: string
+          format: uri
+        updated_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    Job:
+      type: object
+      required:
+        - id
+        - commit
+        - allow_failure
+        - created_at
+        - name
+        - pipeline
+        - ref
+        - stage
+        - status
+        - web_url
+        - user
+      properties:
+        id:
+          type: integer
+        commit:
+          $ref: '#/components/schemas/Commit'
+        allow_failure:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        pipeline:
+          $ref: '#/components/schemas/Pipeline'
+        ref:
+          type: string
+        stage:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        web_url:
+          type: string
+          format: uri
+        user:
+          $ref: '#/components/schemas/User'
+
+    Branch:
+      type: object
+      required:
+        - name
+        - merged
+        - protected
+        - default
+        - can_push
+        - web_url
+        - commit
+      properties:
+        name:
+          type: string
+        merged:
+          type: boolean
+        protected:
+          type: boolean
+        default:
+          type: boolean
+        can_push:
+          type: boolean
+        web_url:
+          type: string
+          format: uri
+        commit:
+          $ref: '#/components/schemas/Commit'
+        pipeline:
+          $ref: '#/components/schemas/Pipeline'
+
+    ProjectPipelines:
+      type: object
+      required:
+        - group_id
+        - project
+        - pipelines
+      properties:
+        group_id:
+          type: integer
+        project:
+          $ref: '#/components/schemas/Project'
+        pipelines:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pipeline'
+
+    ProjectPipeline:
+      type: object
+      required:
+        - group_id
+        - project
+      properties:
+        group_id:
+          type: integer
+        project:
+          $ref: '#/components/schemas/Project'
+        pipeline:
+          $ref: '#/components/schemas/Pipeline'
+        failed_jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+
+    BranchPipeline:
+      type: object
+      required:
+        - branch
+      properties:
+        branch:
+          $ref: '#/components/schemas/Branch'
+        pipeline:
+          $ref: '#/components/schemas/Pipeline'
+        failed_jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+
+    Schedule:
+      type: object
+      required:
+        - id
+        - description
+        - ref
+        - cron
+        - cron_timezone
+        - next_run_at
+        - active
+        - created_at
+        - updated_at
+        - owner
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        ref:
+          type: string
+        cron:
+          type: string
+        cron_timezone:
+          type: string
+        next_run_at:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owner:
+          $ref: '#/components/schemas/User'
+
+    ScheduleProjectPipeline:
+      type: object
+      required:
+        - group_id
+        - schedule
+        - project
+      properties:
+        group_id:
+          type: integer
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        project:
+          $ref: '#/components/schemas/Project'
+        pipeline:
+          $ref: '#/components/schemas/Pipeline'
+        failed_jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+
+    StartPipelineRequest:
+      type: object
+      required:
+        - project_id
+        - branch
+      properties:
+        project_id:
+          type: integer
+        branch:
+          type: string
+        env_vars:
+          type: object
+          additionalProperties:
+            type: string
