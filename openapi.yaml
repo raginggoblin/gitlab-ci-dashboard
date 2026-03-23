@@ -2,14 +2,18 @@ openapi: 3.1.0
 info:
   title: GitLab CI Dashboard Frontend API
   version: 1.0.0
-  description: API surface inferred from Angular frontend calls in src/app.
+  description: API to service Angular frontend calls in src/app.
+
 servers:
   - url: /
+
 paths:
   /api/config:
     get:
       operationId: getConfig
       summary: Get frontend configuration
+      tags:
+        - config
       responses:
         '200':
           description: Frontend configuration
@@ -22,6 +26,8 @@ paths:
     get:
       operationId: getGroups
       summary: Get groups
+      tags:
+        - groups
       responses:
         '200':
           description: Groups
@@ -36,6 +42,8 @@ paths:
     get:
       operationId: getBranches
       summary: Get branches for a project
+      tags:
+        - branches
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
       responses:
@@ -52,6 +60,8 @@ paths:
     get:
       operationId: getProjectsWithPipelines
       summary: Get projects and their pipelines for a group
+      tags:
+        - pipelines
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
@@ -69,6 +79,8 @@ paths:
     get:
       operationId: getPipelines
       summary: Get pipelines for a project
+      tags:
+        - pipelines
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
         - name: source
@@ -90,6 +102,8 @@ paths:
     get:
       operationId: getProjectsWithLatestPipeline
       summary: Get latest pipeline per project in a group
+      tags:
+       - pipelines
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
@@ -107,6 +121,8 @@ paths:
     get:
       operationId: getBranchesWithLatestPipeline
       summary: Get latest pipeline per branch in a project
+      tags:
+       - pipelines
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
       responses:
@@ -123,6 +139,8 @@ paths:
     get:
       operationId: getSchedulesWithLatestPipelines
       summary: Get schedules with latest pipeline in a group
+      tags:
+       - pipelines
       parameters:
         - $ref: '#/components/parameters/GroupIdQuery'
         - $ref: '#/components/parameters/ProjectIdsCsvQuery'
@@ -140,6 +158,8 @@ paths:
     get:
       operationId: getJobs
       summary: Get jobs in a pipeline
+      tags:
+        - jobs
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
         - $ref: '#/components/parameters/PipelineIdQuery'
@@ -164,6 +184,8 @@ paths:
     get:
       operationId: downloadArtifact
       summary: Download artifacts for a job
+      tags:
+        - artifacts
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
         - $ref: '#/components/parameters/JobIdQuery'
@@ -190,6 +212,8 @@ paths:
     post:
       operationId: cancelPipeline
       summary: Cancel a pipeline
+      tags:
+        - pipelines
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
         - $ref: '#/components/parameters/PipelineIdQuery'
@@ -207,6 +231,8 @@ paths:
     post:
       operationId: retryPipeline
       summary: Retry a pipeline
+      tags:
+        - pipelines
       parameters:
         - $ref: '#/components/parameters/ProjectIdQuery'
         - $ref: '#/components/parameters/PipelineIdQuery'
@@ -224,6 +250,8 @@ paths:
     post:
       operationId: startPipeline
       summary: Start a pipeline
+      tags:
+        - pipelines
       requestBody:
         required: true
         content:
