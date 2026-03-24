@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class GitlabCiDashboardApplication
 
 fun main(args: Array<String>) {
-	runApplication<GitlabCiDashboardApplication>(*args)
+    runApplication<GitlabCiDashboardApplication>(*args)
 }
