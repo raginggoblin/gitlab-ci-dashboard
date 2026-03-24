@@ -1,24 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-#Gradle
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Backend
+backend/target
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-/api/main
-target
-
-# Node
-**/node_modules
-npm-debug.log
-yarn-error.log
+# Frontend
+frontend/.angular
+frontend/dist
+frontend/node_modules
 
 # STS
 .apt_generated
@@ -56,20 +44,3 @@ out/
 !.vscode/extensions.json
 .history/*
 
-### Kotlin ###
-.kotlin
-
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-**/cover.html
-**/cover.out
-
-# System files
-.DS_Store
-Thumbs.db

@@ -1,6 +1,6 @@
 generatorName: kotlin-spring
-inputSpec: ./openapi.yaml
-outputDir: ../target/generated-sources/openapi
+inputSpec: ./openapi/openapi.yaml
+outputDir: ./backend/target/generated-sources/openapi
 additionalProperties:
   modelPackage: raging.goblin.api.model
   apiPackage: raging.goblin.api.api

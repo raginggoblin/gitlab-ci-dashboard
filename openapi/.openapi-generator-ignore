@@ -1,0 +1,12 @@
+pom.xml
+README.md
+build.gradle.kts
+settings.gradle
+gradlew.bat
+gradlew
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+**/ApiUtil.kt
+**/ApiKeyRequestInterceptor.kt
+**/ClientConfiguration.kt
+**/**Client.kt
