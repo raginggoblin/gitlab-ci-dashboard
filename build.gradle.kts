@@ -5,8 +5,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "larscom"
-version = "0.0.1-SNAPSHOT"
+group = "raging.goblin"
+version = "3.0.0"
 
 java {
 	toolchain {

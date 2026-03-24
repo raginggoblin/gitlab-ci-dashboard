@@ -1,4 +1,4 @@
-package larscom.dashboard
+package raging.goblin.gitlab.ci.dashboard
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
