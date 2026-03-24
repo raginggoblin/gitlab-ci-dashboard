@@ -11,24 +11,36 @@
 
   <groupId>raging.goblin</groupId>
   <artifactId>gitlab-ci-dashboard</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>3.0.0</version>
 
-  <name/>
-  <description/>
+  <name>Gitlab CI Dashboard</name>
+  <description>Gitlab CI Dashboard will provide you with a global overview of all pipelines, schedules, and their statuses within a single
+    group. The default functionality of Gitlab is limited at the project level. This can become hard to manage when you have a lot of
+    projects, potentially resulting in undetected failed pipelines.
+  </description>
   <url/>
   <licenses>
-    <license/>
+    <license>
+      <name>MIT</name>
+    </license>
   </licenses>
   <developers>
-    <developer/>
+    <developer>
+      <name>Larscom</name>
+    </developer>
+    <developer>
+      <name>Raging Goblin</name>
+    </developer>
   </developers>
 
   <properties>
     <java.version>24</java.version>
     <kotlin.version>2.2.21</kotlin.version>
+    <springdoc-openapi-starter-webmvc-ui.version>3.0.2</springdoc-openapi-starter-webmvc-ui.version>
   </properties>
 
   <dependencies>
+    <!-- Spring managed -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc</artifactId>
@@ -46,12 +58,14 @@
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
 
+    <!-- Other -->
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-      <version>3.0.2</version>
+      <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
     </dependency>
 
+    <!-- Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
