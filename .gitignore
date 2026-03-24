@@ -13,6 +13,7 @@ build/
 /out-tsc
 /bazel-out
 /api/main
+target
 
 # Node
 /node_modules

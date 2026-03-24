@@ -1,0 +1,17 @@
+generatorName: kotlin-spring
+inputSpec: ./openapi.yaml
+outputDir: ../target/generated-sources/openapi
+additionalProperties:
+  modelPackage: raging.goblin.api.model
+  apiPackage: raging.goblin.api.api
+  sourceFolder: src/main/kotlin
+  library: spring-cloud
+  useSpringBoot3: true
+  useTags: true
+  interfaceOnly: true
+  skipDefaultInterface: true
+  enumPropertyNaming: UPPERCASE
+  exceptionHandler: false
+
+typeMappings:
+  java.time.OffsetDateTime: java.time.Instant
