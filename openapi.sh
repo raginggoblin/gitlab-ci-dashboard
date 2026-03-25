@@ -8,6 +8,7 @@ OPENAPI_IGNORE_SOURCE="./openapi/.openapi-generator-ignore"
 OPENAPI_IGNORE_TARGET="./backend/.openapi-generator-ignore"
 OPENAPI_GENERATOR_FILES="./backend/.openapi-generator"
 OPENAPI_GRADLE_FILES="./backend/gradle"
+OPENAPI_GENERATOR_CONFIG_FILES="./backend/src/main/kotlin/org"
 
 function echoBuildStep() {
   echo "#############################################################################################################"
@@ -23,4 +24,5 @@ docker run --rm -i -t -v $(pwd):$(pwd) -w $(pwd) -u $(id -u) ${OPENAPI_DOCKER_IM
 
 rm -rf ${OPENAPI_IGNORE_TARGET}
 rm -rf ${OPENAPI_GENERATOR_FILES}
+rm -rf ${OPENAPI_GENERATOR_CONFIG_FILES}
 rm -rf ${OPENAPI_GRADLE_FILES}
