@@ -1,15 +1,15 @@
-package raging.goblin.gitlab.ci.dashboard.schedules
+package raging.goblin.gitlab.ci.dashboard.web.schedules
 
 import org.gitlab4j.api.GitLabApi
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import raging.goblin.gitlab.ci.dashboard.api.model.ScheduleProjectPipeline
 import raging.goblin.gitlab.ci.dashboard.api.model.Status
-import raging.goblin.gitlab.ci.dashboard.jobs.JobsService
-import raging.goblin.gitlab.ci.dashboard.pipelines.PipelinesService
-import raging.goblin.gitlab.ci.dashboard.projects.ProjectsService
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.web.jobs.JobsService
+import raging.goblin.gitlab.ci.dashboard.web.pipelines.PipelinesService
+import raging.goblin.gitlab.ci.dashboard.web.projects.ProjectsService
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
 class SchedulesService(

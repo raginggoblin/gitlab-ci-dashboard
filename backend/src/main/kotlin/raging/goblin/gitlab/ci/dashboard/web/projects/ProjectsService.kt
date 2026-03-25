@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.projects
+package raging.goblin.gitlab.ci.dashboard.web.projects
 
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.api.models.GroupProjectsFilter
@@ -9,11 +9,11 @@ import raging.goblin.gitlab.ci.dashboard.api.model.Project
 import raging.goblin.gitlab.ci.dashboard.api.model.ProjectPipeline
 import raging.goblin.gitlab.ci.dashboard.api.model.ProjectPipelines
 import raging.goblin.gitlab.ci.dashboard.api.model.Status
-import raging.goblin.gitlab.ci.dashboard.jobs.JobsService
-import raging.goblin.gitlab.ci.dashboard.pipelines.PipelinesService
-import raging.goblin.gitlab.ci.dashboard.support.DashboardProperties
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.web.jobs.JobsService
+import raging.goblin.gitlab.ci.dashboard.web.pipelines.PipelinesService
+import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
 class ProjectsService(

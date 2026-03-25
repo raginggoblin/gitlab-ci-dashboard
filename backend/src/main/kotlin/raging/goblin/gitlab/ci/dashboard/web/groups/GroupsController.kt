@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.groups
+package raging.goblin.gitlab.ci.dashboard.web.groups
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

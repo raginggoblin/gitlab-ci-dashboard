@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.support
+package raging.goblin.gitlab.ci.dashboard.mapping
 
 import org.gitlab4j.api.GitLabApiException
 import org.springframework.http.HttpStatus

@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.schedules
+package raging.goblin.gitlab.ci.dashboard.web.schedules
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

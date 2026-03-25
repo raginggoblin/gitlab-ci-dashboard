@@ -1,9 +1,9 @@
-package raging.goblin.gitlab.ci.dashboard.config
+package raging.goblin.gitlab.ci.dashboard.web.config
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import raging.goblin.gitlab.ci.dashboard.api.model.ApiConfig
-import raging.goblin.gitlab.ci.dashboard.support.DashboardProperties
+import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
 
 @Service
 class ConfigService(private val properties: DashboardProperties) {

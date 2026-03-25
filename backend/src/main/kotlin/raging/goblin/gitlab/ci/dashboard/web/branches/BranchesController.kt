@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.branches
+package raging.goblin.gitlab.ci.dashboard.web.branches
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

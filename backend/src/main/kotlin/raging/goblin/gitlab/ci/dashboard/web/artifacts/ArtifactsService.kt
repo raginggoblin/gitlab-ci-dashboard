@@ -1,11 +1,11 @@
-package raging.goblin.gitlab.ci.dashboard.artifacts
+package raging.goblin.gitlab.ci.dashboard.web.artifacts
 
 import org.gitlab4j.api.GitLabApi
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
 
 @Service
 class ArtifactsService(private val gitLabApi: GitLabApi) {

@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.pipelines
+package raging.goblin.gitlab.ci.dashboard.web.pipelines
 
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.api.models.PipelineFilter
@@ -10,9 +10,9 @@ import org.springframework.web.server.ResponseStatusException
 import raging.goblin.gitlab.ci.dashboard.api.model.Pipeline
 import raging.goblin.gitlab.ci.dashboard.api.model.Source
 import raging.goblin.gitlab.ci.dashboard.api.model.StartPipelineRequest
-import raging.goblin.gitlab.ci.dashboard.support.DashboardProperties
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Date

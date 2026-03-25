@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.jobs
+package raging.goblin.gitlab.ci.dashboard.web.jobs
 
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.models.Constants
@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import raging.goblin.gitlab.ci.dashboard.api.model.Job
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
 class JobsService(private val gitLabApi: GitLabApi) {

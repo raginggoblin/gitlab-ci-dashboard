@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.branches
+package raging.goblin.gitlab.ci.dashboard.web.branches
 
 import org.gitlab4j.api.GitLabApi
 import org.slf4j.LoggerFactory
@@ -7,10 +7,10 @@ import raging.goblin.gitlab.ci.dashboard.api.model.Branch
 import raging.goblin.gitlab.ci.dashboard.api.model.BranchPipeline
 import raging.goblin.gitlab.ci.dashboard.api.model.Pipeline
 import raging.goblin.gitlab.ci.dashboard.api.model.Status
-import raging.goblin.gitlab.ci.dashboard.jobs.JobsService
-import raging.goblin.gitlab.ci.dashboard.pipelines.PipelinesService
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.web.jobs.JobsService
+import raging.goblin.gitlab.ci.dashboard.web.pipelines.PipelinesService
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
 class BranchesService(

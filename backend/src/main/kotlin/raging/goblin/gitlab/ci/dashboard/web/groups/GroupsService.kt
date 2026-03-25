@@ -1,13 +1,13 @@
-package raging.goblin.gitlab.ci.dashboard.groups
+package raging.goblin.gitlab.ci.dashboard.web.groups
 
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.api.models.GroupFilter
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import raging.goblin.gitlab.ci.dashboard.api.model.Group
-import raging.goblin.gitlab.ci.dashboard.support.DashboardProperties
-import raging.goblin.gitlab.ci.dashboard.support.runGitLabCall
-import raging.goblin.gitlab.ci.dashboard.support.toApiModel
+import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
+import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
+import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
 class GroupsService(

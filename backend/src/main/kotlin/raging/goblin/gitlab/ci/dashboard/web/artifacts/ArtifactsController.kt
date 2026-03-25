@@ -1,4 +1,4 @@
-package raging.goblin.gitlab.ci.dashboard.artifacts
+package raging.goblin.gitlab.ci.dashboard.web.artifacts
 
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.Resource

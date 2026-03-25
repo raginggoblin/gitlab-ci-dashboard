@@ -1,8 +1,9 @@
-package raging.goblin.gitlab.ci.dashboard.support
+package raging.goblin.gitlab.ci.dashboard.config
 
 import org.gitlab4j.api.GitLabApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
 
 @Configuration
 class GitLabClientConfiguration(private val properties: DashboardProperties) {
