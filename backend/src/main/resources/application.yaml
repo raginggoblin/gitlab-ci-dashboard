@@ -2,6 +2,20 @@ spring:
   application:
     name: gitlab-ci-dashboard
 
+version: ${VERSION:dev}
+gitlab-base-url: ${GITLAB_BASE_URL:https://gitlab.com}
+gitlab-api-token: ${GITLAB_API_TOKEN:}
+api-read-only: ${API_READ_ONLY:true}
+ui-hide-write-actions: ${UI_HIDE_WRITE_ACTIONS:false}
+ui-page-size-options: ${UI_PAGE_SIZE_OPTIONS:10,20,30,40,50}
+ui-default-page-size: ${UI_DEFAULT_PAGE_SIZE:10}
+gitlab-group-only-ids: ${GITLAB_GROUP_ONLY_IDS:}
+gitlab-group-skip-ids: ${GITLAB_GROUP_SKIP_IDS:}
+gitlab-group-only-top-level: ${GITLAB_GROUP_ONLY_TOP_LEVEL:true}
+gitlab-group-include-subgroups: ${GITLAB_GROUP_INCLUDE_SUBGROUPS:true}
+gitlab-project-skip-ids: ${GITLAB_PROJECT_SKIP_IDS:}
+gitlab-pipeline-history-days: ${GITLAB_PIPELINE_HISTORY_DAYS:5}
+
 logging:
   level:
     raging:
@@ -9,4 +23,3 @@ logging:
         gitlab:
           ci:
             dashboard: debug
-
