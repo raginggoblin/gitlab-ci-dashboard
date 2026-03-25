@@ -2,23 +2,29 @@ spring:
   application:
     name: gitlab-ci-dashboard
 
-gitlab-base-url: ${GITLAB_BASE_URL:https://gitlab.com}
+gitlab-base-url: ${GITLAB_BASE_URL:https://gitlab.at.rws.nl}
 gitlab-api-token: ${GITLAB_API_TOKEN:}
-api-read-only: ${API_READ_ONLY:true}
+api-read-only: ${API_READ_ONLY:false}
 ui-hide-write-actions: ${UI_HIDE_WRITE_ACTIONS:false}
 ui-page-size-options: ${UI_PAGE_SIZE_OPTIONS:10,20,30,40,50}
 ui-default-page-size: ${UI_DEFAULT_PAGE_SIZE:10}
-gitlab-group-only-ids: ${GITLAB_GROUP_ONLY_IDS:}
+gitlab-group-only-ids: ${GITLAB_GROUP_ONLY_IDS:111,658,659,1391,5254,5261,5287,5314,5285,5286,5403,5731,5723,5732}
 gitlab-group-skip-ids: ${GITLAB_GROUP_SKIP_IDS:}
-gitlab-group-only-top-level: ${GITLAB_GROUP_ONLY_TOP_LEVEL:true}
+gitlab-group-only-top-level: ${GITLAB_GROUP_ONLY_TOP_LEVEL:false}
 gitlab-group-include-subgroups: ${GITLAB_GROUP_INCLUDE_SUBGROUPS:true}
+gitlab-group-cache-ttl-seconds: ${GITLAB_GROUP_CACHE_TTL_SECONDS:300}
 gitlab-project-skip-ids: ${GITLAB_PROJECT_SKIP_IDS:}
+gitlab-project-cache-ttl-seconds: ${GITLAB_PROJECT_CACHE_TTL_SECONDS:300}
+gitlab-pipeline-cache-ttl-seconds: ${GITLAB_PIPELINE_CACHE_TTL_SECONDS:5}
 gitlab-pipeline-history-days: ${GITLAB_PIPELINE_HISTORY_DAYS:5}
+gitlab-branch-cache-ttl-seconds: ${GITLAB_BRANCH_CACHE_TTL_SECONDS:60}
+gitlab-schedule-cache-ttl-seconds: ${GITLAB_SCHEDULE_CACHE_TTL_SECONDS:300}
+gitlab-job-cache-ttl-seconds: ${GITLAB_JOB_CACHE_TTL_SECONDS:5}
+gitlab-artifact-cache-ttl-seconds: ${GITLAB_ARTIFACT_CACHE_TTL_SECONDS:1800}
 
 logging:
   level:
-    raging:
-      goblin:
-        gitlab:
-          ci:
-            dashboard: debug
+    larscom:
+      gitlab:
+        ci:
+          dashboard: debug

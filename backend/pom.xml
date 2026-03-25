@@ -9,7 +9,7 @@
     <version>4.0.4</version>
   </parent>
 
-  <groupId>raging.goblin</groupId>
+  <groupId>larscom</groupId>
   <artifactId>gitlab-ci-dashboard</artifactId>
   <version>3.0.0</version>
 

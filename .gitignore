@@ -44,4 +44,4 @@ out/
 !.vscode/extensions.json
 .history/*
 
-/backend/src/main/kotlin/raging/goblin/gitlab/ci/dashboard/api/
+/backend/src/main/kotlin/larscom/gitlab/ci/dashboard/api/
