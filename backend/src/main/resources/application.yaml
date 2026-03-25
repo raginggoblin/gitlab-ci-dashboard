@@ -2,7 +2,6 @@ spring:
   application:
     name: gitlab-ci-dashboard
 
-version: ${VERSION:dev}
 gitlab-base-url: ${GITLAB_BASE_URL:https://gitlab.com}
 gitlab-api-token: ${GITLAB_API_TOKEN:}
 api-read-only: ${API_READ_ONLY:true}
