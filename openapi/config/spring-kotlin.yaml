@@ -1,9 +1,9 @@
 generatorName: kotlin-spring
 inputSpec: ./openapi/openapi.yaml
-outputDir: ./backend/target/generated-sources/openapi
+outputDir: ./backend
 additionalProperties:
-  modelPackage: raging.goblin.api.model
-  apiPackage: raging.goblin.api.api
+  modelPackage: raging.goblin.gitlab.ci.dashboard.api.model
+  apiPackage: raging.goblin.gitlab.ci.dashboard.api.api
   sourceFolder: src/main/kotlin
   library: spring-cloud
   useSpringBoot3: true

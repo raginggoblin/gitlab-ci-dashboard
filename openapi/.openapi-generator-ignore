@@ -1,5 +1,6 @@
 pom.xml
 README.md
+gradle
 build.gradle.kts
 settings.gradle
 gradlew.bat
@@ -10,3 +11,5 @@ gradle/wrapper/gradle-wrapper.properties
 **/ApiKeyRequestInterceptor.kt
 **/ClientConfiguration.kt
 **/**Client.kt
+.openapi-generator/FILES
+.openapi-generator/VERSION
