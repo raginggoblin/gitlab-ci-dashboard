@@ -1,3 +1,12 @@
 spring:
   application:
     name: gitlab-ci-dashboard
+
+logging:
+  level:
+    raging:
+      goblin:
+        gitlab:
+          ci:
+            dashboard: debug
+
