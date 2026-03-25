@@ -3,8 +3,10 @@ package raging.goblin.gitlab.ci.dashboard.web.groups
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.api.models.GroupFilter
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import raging.goblin.gitlab.ci.dashboard.api.model.Group
+import raging.goblin.gitlab.ci.dashboard.config.CacheNames
 import raging.goblin.gitlab.ci.dashboard.config.DashboardProperties
 import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
 import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
@@ -16,6 +18,7 @@ class GroupsService(
 ) {
     private val logger = LoggerFactory.getLogger(GroupsService::class.java)
 
+    @Cacheable(cacheNames = [CacheNames.GROUPS])
     fun getGroups(): List<Group> {
         logger.debug("Groups service call")
 

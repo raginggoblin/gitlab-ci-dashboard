@@ -15,8 +15,15 @@ class DashboardProperties(
     @Value($$"${gitlab-group-skip-ids}") private val groupSkipIdsRaw: String,
     @Value($$"${gitlab-group-only-top-level}") val groupOnlyTopLevel: Boolean,
     @Value($$"${gitlab-group-include-subgroups}") val groupIncludeSubgroups: Boolean,
+    @Value($$"${gitlab-group-cache-ttl-seconds}") val groupCacheTtlSeconds: Long,
     @Value($$"${gitlab-project-skip-ids}") private val projectSkipIdsRaw: String,
+    @Value($$"${gitlab-project-cache-ttl-seconds}") val projectCacheTtlSeconds: Long,
+    @Value($$"${gitlab-pipeline-cache-ttl-seconds}") val pipelineCacheTtlSeconds: Long,
     @Value($$"${gitlab-pipeline-history-days}") val pipelineHistoryDays: Long,
+    @Value($$"${gitlab-branch-cache-ttl-seconds}") val branchCacheTtlSeconds: Long,
+    @Value($$"${gitlab-schedule-cache-ttl-seconds}") val scheduleCacheTtlSeconds: Long,
+    @Value($$"${gitlab-job-cache-ttl-seconds}") val jobCacheTtlSeconds: Long,
+    @Value($$"${gitlab-artifact-cache-ttl-seconds}") val artifactCacheTtlSeconds: Long,
 ) {
     val pageSizeOptions: List<Int> = parseCsvInts(pageSizeOptionsRaw)
     val groupOnlyIds: Set<Int> = parseCsvInts(groupOnlyIdsRaw).toSet()

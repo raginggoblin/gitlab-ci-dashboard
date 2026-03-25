@@ -3,10 +3,12 @@ package raging.goblin.gitlab.ci.dashboard.web.jobs
 import org.gitlab4j.api.GitLabApi
 import org.gitlab4j.models.Constants
 import org.slf4j.LoggerFactory
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import raging.goblin.gitlab.ci.dashboard.api.model.Job
+import raging.goblin.gitlab.ci.dashboard.config.CacheNames
 import raging.goblin.gitlab.ci.dashboard.mapping.runGitLabCall
 import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 
@@ -14,12 +16,17 @@ import raging.goblin.gitlab.ci.dashboard.mapping.toApiModel
 class JobsService(private val gitLabApi: GitLabApi) {
     private val logger = LoggerFactory.getLogger(JobsService::class.java)
 
+    @Cacheable(
+        cacheNames = [CacheNames.JOBS],
+        key = "#projectId + ':' + #pipelineId + ':' + #scope.replaceAll('\\\\s+', '').toLowerCase()",
+    )
     fun getJobs(projectId: Int, pipelineId: Int, scope: String): List<Job> {
         logger.debug("Jobs service call: get jobs projectId={} pipelineId={} scope={}", projectId, pipelineId, scope)
         val scopes = parseScopes(scope)
         return getJobs(projectId, pipelineId, scopes)
     }
 
+    @Cacheable(cacheNames = [CacheNames.JOBS], key = "#projectId + ':' + #pipelineId + ':failed'")
     fun getFailedJobs(projectId: Int, pipelineId: Int): List<Job> {
         logger.debug("Jobs service call: get failed jobs projectId={} pipelineId={}", projectId, pipelineId)
         return getJobs(projectId, pipelineId, listOf(Constants.JobScope.FAILED))
