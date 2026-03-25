@@ -3,10 +3,10 @@ package raging.goblin.gitlab.ci.dashboard.web
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import raging.goblin.api.api.PipelinesApi
-import raging.goblin.api.model.Pipeline
-import raging.goblin.api.model.Source
-import raging.goblin.api.model.StartPipelineRequest
+import raging.goblin.gitlab.ci.dashboard.api.api.PipelinesApi
+import raging.goblin.gitlab.ci.dashboard.api.model.Pipeline
+import raging.goblin.gitlab.ci.dashboard.api.model.Source
+import raging.goblin.gitlab.ci.dashboard.api.model.StartPipelineRequest
 
 @RestController
 class PipelinesController : PipelinesApi {

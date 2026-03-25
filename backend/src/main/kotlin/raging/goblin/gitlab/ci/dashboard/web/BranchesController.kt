@@ -3,9 +3,9 @@ package raging.goblin.gitlab.ci.dashboard.web
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import raging.goblin.api.api.BranchesApi
-import raging.goblin.api.model.Branch
-import raging.goblin.api.model.BranchPipeline
+import raging.goblin.gitlab.ci.dashboard.api.api.BranchesApi
+import raging.goblin.gitlab.ci.dashboard.api.model.Branch
+import raging.goblin.gitlab.ci.dashboard.api.model.BranchPipeline
 
 @RestController
 class BranchesController : BranchesApi {

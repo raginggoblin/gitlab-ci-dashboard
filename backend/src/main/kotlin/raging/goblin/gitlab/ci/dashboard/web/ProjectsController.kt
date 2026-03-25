@@ -3,9 +3,9 @@ package raging.goblin.gitlab.ci.dashboard.web
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import raging.goblin.api.api.ProjectsApi
-import raging.goblin.api.model.ProjectPipeline
-import raging.goblin.api.model.ProjectPipelines
+import raging.goblin.gitlab.ci.dashboard.api.api.ProjectsApi
+import raging.goblin.gitlab.ci.dashboard.api.model.ProjectPipeline
+import raging.goblin.gitlab.ci.dashboard.api.model.ProjectPipelines
 
 @RestController
 class ProjectsController : ProjectsApi {

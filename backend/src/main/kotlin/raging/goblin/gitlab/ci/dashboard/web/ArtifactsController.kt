@@ -3,7 +3,7 @@ package raging.goblin.gitlab.ci.dashboard.web
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import raging.goblin.api.api.ArtifactsApi
+import raging.goblin.gitlab.ci.dashboard.api.api.ArtifactsApi
 
 @RestController
 class ArtifactsController : ArtifactsApi {

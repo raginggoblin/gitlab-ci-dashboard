@@ -3,8 +3,8 @@ package raging.goblin.gitlab.ci.dashboard.web
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import raging.goblin.api.api.ConfigApi
-import raging.goblin.api.model.ApiConfig
+import raging.goblin.gitlab.ci.dashboard.api.api.ConfigApi
+import raging.goblin.gitlab.ci.dashboard.api.model.ApiConfig
 
 @RestController
 class ConfigController : ConfigApi {
