@@ -8,6 +8,7 @@ export interface ApiConfig {
   hide_write_actions: boolean
   page_size_options: number[]
   default_page_size: number
+  fetch_refresh_interval: number
 }
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +23,7 @@ export class ConfigService {
 
   readonly pageSizeOptions = computed(() => this.config()?.page_size_options ?? [10, 20, 30, 40, 50])
   readonly defaultPageSize = computed(() => this.config()?.default_page_size ?? 10)
+  readonly fetchRefreshInterval = computed(() => this.config()?.fetch_refresh_interval ?? 5000)
   readonly readOnly = computed(() => this.config()?.read_only ?? true)
   readonly hideWriteActions = computed(() => this.readOnly() && (this.config()?.hide_write_actions ?? false))
 }

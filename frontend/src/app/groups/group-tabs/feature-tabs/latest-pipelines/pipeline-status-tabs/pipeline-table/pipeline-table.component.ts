@@ -3,7 +3,6 @@ import { DownloadArtifactsIconComponent } from '$groups/group-tabs/feature-tabs/
 import { JobsComponent } from '$groups/group-tabs/feature-tabs/components/jobs/jobs.component'
 import { WriteActionsIconComponent } from '$groups/group-tabs/feature-tabs/components/write-actions-icon/write-actions-icon.component'
 import { CoverageColorPipe } from '$groups/group-tabs/feature-tabs/pipes/coverage-color.pipe'
-import { FETCH_REFRESH_INTERVAL } from '$groups/http'
 import { BranchPipeline } from '$groups/model/branch'
 import { Project, ProjectId, ProjectPipeline } from '$groups/model/project'
 import { Status } from '$groups/model/status'
@@ -146,7 +145,7 @@ export class PipelineTableComponent implements OnDestroy {
         .pipe(finalize(() => this.branchesLoading.set(false)))
         .subscribe((branchPipelines) => this.branchPipelines.set(branchPipelines))
 
-      this.refreshSubscription = interval(FETCH_REFRESH_INTERVAL)
+      this.refreshSubscription = interval(this.config.fetchRefreshInterval())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           switchMap(() => this.latestPipelineService.getBranchesWithLatestPipeline(projectId))

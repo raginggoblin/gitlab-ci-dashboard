@@ -312,6 +312,7 @@ components:
         - hide_write_actions
         - page_size_options
         - default_page_size
+        - fetch_refresh_interval
       properties:
         api_version:
           type: string
@@ -324,6 +325,8 @@ components:
           items:
             type: integer
         default_page_size:
+          type: integer
+        fetch_refresh_interval:
           type: integer
 
     ErrorResponse:

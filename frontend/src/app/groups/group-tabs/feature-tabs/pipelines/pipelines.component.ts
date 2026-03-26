@@ -1,4 +1,3 @@
-import { FETCH_REFRESH_INTERVAL } from '$groups/http'
 import { GroupId } from '$groups/model/group'
 import { PipelineId } from '$groups/model/pipeline'
 import { ProjectId, ProjectPipeline, ProjectPipelines } from '$groups/model/project'
@@ -10,6 +9,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, injec
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { NzSpinModule } from 'ng-zorro-antd/spin'
 import { finalize, interval, switchMap } from 'rxjs'
+import { ConfigService } from '$service/config.service'
 import { ProjectFilterComponent } from '../components/project-filter/project-filter.component'
 import { TopicFilterComponent } from '../components/topic-filter/topic-filter.component'
 import { BranchFilterComponent } from './components/branch-filter/branch-filter.component'
@@ -36,6 +36,7 @@ const STORAGE_KEY = 'pinned_pipelines'
 export class PipelinesComponent implements OnInit {
   private pipelinesService = inject(PipelinesService)
   private destroyRef = inject(DestroyRef)
+  private config = inject(ConfigService)
 
   groupMap = input.required<Map<GroupId, Set<ProjectId>>>()
 
@@ -77,7 +78,7 @@ export class PipelinesComponent implements OnInit {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((projectPipelines) => this.projectPipelines.set(projectPipelines))
 
-    interval(FETCH_REFRESH_INTERVAL)
+    interval(this.config.fetchRefreshInterval())
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         switchMap(() =>

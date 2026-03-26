@@ -11,6 +11,7 @@ class DashboardProperties(
     @Value($$"${ui-hide-write-actions}") val hideWriteActions: Boolean,
     @Value($$"${ui-page-size-options}") private val pageSizeOptionsRaw: String,
     @Value($$"${ui-default-page-size}") val defaultPageSize: Int,
+    @Value($$"${ui-fetch-refresh-interval}") val fetchRefreshInterval: Int,
     @Value($$"${gitlab-group-only-ids}") private val groupOnlyIdsRaw: String,
     @Value($$"${gitlab-group-skip-ids}") private val groupSkipIdsRaw: String,
     @Value($$"${gitlab-group-only-top-level}") val groupOnlyTopLevel: Boolean,

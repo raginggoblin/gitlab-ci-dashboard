@@ -8,10 +8,11 @@ api-read-only: ${API_READ_ONLY:false}
 ui-hide-write-actions: ${UI_HIDE_WRITE_ACTIONS:false}
 ui-page-size-options: ${UI_PAGE_SIZE_OPTIONS:10,20,30,40,50}
 ui-default-page-size: ${UI_DEFAULT_PAGE_SIZE:10}
+ui-fetch-refresh-interval: ${UI_FETCH_REFRESH_INTERVAL:5000}
 gitlab-group-only-ids: ${GITLAB_GROUP_ONLY_IDS:111,658,659,1391,5254,5261,5287,5314,5285,5286,5403,5731,5723,5732}
 gitlab-group-skip-ids: ${GITLAB_GROUP_SKIP_IDS:}
 gitlab-group-only-top-level: ${GITLAB_GROUP_ONLY_TOP_LEVEL:false}
-gitlab-group-include-subgroups: ${GITLAB_GROUP_INCLUDE_SUBGROUPS:true}
+gitlab-group-include-subgroups: ${GITLAB_GROUP_INCLUDE_SUBGROUPS:false}
 gitlab-group-cache-ttl-seconds: ${GITLAB_GROUP_CACHE_TTL_SECONDS:300}
 gitlab-project-skip-ids: ${GITLAB_PROJECT_SKIP_IDS:}
 gitlab-project-cache-ttl-seconds: ${GITLAB_PROJECT_CACHE_TTL_SECONDS:300}

@@ -1,6 +1,5 @@
 import { FavoritesIconComponent } from '$groups/group-tabs/favorites/favorites-icon/favorites-icon.component'
 import { StatusColorPipe } from '$groups/group-tabs/feature-tabs/pipes/status-color.pipe'
-import { FETCH_REFRESH_INTERVAL } from '$groups/http'
 import { Pipeline, Source } from '$groups/model/pipeline'
 import { Project } from '$groups/model/project'
 import { ScheduleId, ScheduleProjectPipeline } from '$groups/model/schedule'
@@ -163,7 +162,7 @@ export class ScheduleTableComponent implements OnDestroy {
 
       source$.pipe(finalize(() => this.loading.set(false))).subscribe((pipelines) => this.pipelines.set(pipelines))
 
-      this.refreshSubscription = interval(FETCH_REFRESH_INTERVAL)
+      this.refreshSubscription = interval(this.config.fetchRefreshInterval())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           switchMap(() => source$)

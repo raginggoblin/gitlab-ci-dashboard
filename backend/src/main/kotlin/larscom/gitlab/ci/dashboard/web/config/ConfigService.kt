@@ -22,6 +22,7 @@ class ConfigService(
             hideWriteActions = properties.hideWriteActions,
             pageSizeOptions = properties.pageSizeOptions,
             defaultPageSize = properties.defaultPageSize,
+            fetchRefreshInterval = properties.fetchRefreshInterval,
         )
     }
 }

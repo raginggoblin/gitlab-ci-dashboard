@@ -8,8 +8,6 @@ export const retryConfig: RetryConfig = {
   resetOnSuccess: true
 }
 
-export const FETCH_REFRESH_INTERVAL = 5000
-
 export function createParams(groupId: GroupId, projectIds?: Set<ProjectId>): { [key: string]: string } {
   const params = Object({ group_id: groupId })
   if (projectIds && projectIds.size > 0) {

@@ -1,4 +1,3 @@
-import { FETCH_REFRESH_INTERVAL } from '$groups/http'
 import { GroupId } from '$groups/model/group'
 import { PipelineId } from '$groups/model/pipeline'
 import { ProjectId, ProjectPipeline } from '$groups/model/project'
@@ -14,6 +13,7 @@ import { TopicFilterComponent } from '../components/topic-filter/topic-filter.co
 import { PipelineStatusTabsComponent } from './pipeline-status-tabs/pipeline-status-tabs.component'
 import { LatestPipelineService } from './service/latest-pipeline.service'
 import { Job } from '$groups/model/job'
+import { ConfigService } from '$service/config.service'
 
 @Component({
   selector: 'gcd-latest-pipelines',
@@ -31,6 +31,7 @@ import { Job } from '$groups/model/job'
 export class LatestPipelinesComponent implements OnInit {
   private latestPipelineService = inject(LatestPipelineService)
   private destroyRef = inject(DestroyRef)
+  private config = inject(ConfigService)
 
   groupMap = input.required<Map<GroupId, Set<ProjectId>>>()
 
@@ -61,7 +62,7 @@ export class LatestPipelinesComponent implements OnInit {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((projectPipelines) => this.projectPipelines.set(projectPipelines))
 
-    interval(FETCH_REFRESH_INTERVAL)
+    interval(this.config.fetchRefreshInterval())
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         switchMap(() =>

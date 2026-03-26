@@ -1,10 +1,10 @@
-import { FETCH_REFRESH_INTERVAL } from '$groups/http'
 import { GroupId } from '$groups/model/group'
 import { ProjectId } from '$groups/model/project'
 import { ScheduleProjectPipeline } from '$groups/model/schedule'
 import { Status } from '$groups/model/status'
 import { filterFailedJobs, filterPipeline, filterProject } from '$groups/util/filter'
 import { forkJoinFlatten } from '$groups/util/fork'
+import { ConfigService } from '$service/config.service'
 
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, input, signal } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
@@ -34,6 +34,7 @@ import { ScheduleService } from './service/schedule.service'
 export class SchedulesComponent implements OnInit {
   private scheduleService = inject(ScheduleService)
   private destroyRef = inject(DestroyRef)
+  private config = inject(ConfigService)
 
   groupMap = input.required<Map<GroupId, Set<ProjectId>>>()
 
@@ -71,7 +72,7 @@ export class SchedulesComponent implements OnInit {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((schedulePipelines) => this.schedulePipelines.set(schedulePipelines))
 
-    interval(FETCH_REFRESH_INTERVAL)
+    interval(this.config.fetchRefreshInterval())
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         switchMap(() => forkJoinFlatten(this.groupMap(), this.scheduleService.getSchedules.bind(this.scheduleService)))
