@@ -28,4 +28,4 @@ logging:
     larscom:
       gitlab:
         ci:
-          dashboard: debug
+          dashboard: ${BACKEN_LOG_LEVEL:info}
