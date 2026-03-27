@@ -12,7 +12,7 @@ class ArtifactsController(private val artifactsService: ArtifactsService) : Arti
     private val logger = LoggerFactory.getLogger(ArtifactsController::class.java)
 
     override fun downloadArtifact(projectId: Int, jobId: Int): ResponseEntity<Resource> {
-        logger.debug("Artifacts controller call: projectId={} jobId={}", projectId, jobId)
+        logger.info("Artifacts controller call: projectId={} jobId={}", projectId, jobId)
         return ResponseEntity
             .ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
