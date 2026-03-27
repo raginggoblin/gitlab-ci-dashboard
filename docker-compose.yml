@@ -1,16 +1,22 @@
 services:
-  gitlab-ci-dashboard:
-    image: larscom/gitlab-ci-dashboard
+  gitlab-ci-dashboard-backend:
+    image: larscom/gitlab-ci-dashboard-backend
     build:
-      context: .
-      args:
-        VERSION_ARG: docker
-    env_file:
-      - ./api/.env
-    # volumes:
-    #  - ./api/config.toml:/app/config.toml
-    #  - ./api/certs/ca.crt:/app/certs/ca.crt
+      context: ./backend
     environment:
-      - 'TZ=Europe/Amsterdam'
+      - TZ=Europe/Amsterdam
+      - SERVER_PORT=${BACKEND_PORT:-8080}
     ports:
-      - '8080:8080'
+      - '${BACKEND_PORT:-8080}:${BACKEND_PORT:-8080}'
+
+  gitlab-ci-dashboard-frontend:
+    image: larscom/gitlab-ci-dashboard-frontend
+    build:
+      context: ./frontend
+    environment:
+      - TZ=Europe/Amsterdam
+      - FRONTEND_PORT=${FRONTEND_PORT:-80}
+      - BACKEND_HOST=gitlab-ci-dashboard-backend
+      - BACKEND_PORT=${BACKEND_PORT:-8080}
+    ports:
+      - '${FRONTEND_PORT:-80}:${FRONTEND_PORT:-80}'
