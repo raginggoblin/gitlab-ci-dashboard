@@ -1,9 +1,5 @@
 package larscom.gitlab.ci.dashboard.mapping
 
-import org.gitlab4j.api.models.AbstractUser
-import org.gitlab4j.api.models.JobStatus
-import org.gitlab4j.api.models.PipelineSchedule
-import org.gitlab4j.api.models.PipelineStatus
 import larscom.gitlab.ci.dashboard.api.model.Branch
 import larscom.gitlab.ci.dashboard.api.model.Commit
 import larscom.gitlab.ci.dashboard.api.model.Group
@@ -15,17 +11,25 @@ import larscom.gitlab.ci.dashboard.api.model.Schedule
 import larscom.gitlab.ci.dashboard.api.model.Source
 import larscom.gitlab.ci.dashboard.api.model.Status
 import larscom.gitlab.ci.dashboard.api.model.User
+import larscom.gitlab.ci.dashboard.gitlab.GitLabBranch
+import larscom.gitlab.ci.dashboard.gitlab.GitLabCommit
+import larscom.gitlab.ci.dashboard.gitlab.GitLabGroup
+import larscom.gitlab.ci.dashboard.gitlab.GitLabJob
+import larscom.gitlab.ci.dashboard.gitlab.GitLabNamespace
+import larscom.gitlab.ci.dashboard.gitlab.GitLabPipeline
+import larscom.gitlab.ci.dashboard.gitlab.GitLabProject
+import larscom.gitlab.ci.dashboard.gitlab.GitLabSchedule
+import larscom.gitlab.ci.dashboard.gitlab.GitLabUser
 import java.math.BigDecimal
 import java.net.URI
 import java.time.Instant
-import java.util.Date
 
-fun org.gitlab4j.api.models.Group.toApiModel(): Group = Group(
+fun GitLabGroup.toApiModel(): Group = Group(
     id = (id ?: 0L).toInt(),
     name = name.orEmpty(),
 )
 
-fun org.gitlab4j.api.models.Project.toApiModel(): Project = Project(
+fun GitLabProject.toApiModel(): Project = Project(
     id = (id ?: 0L).toInt(),
     name = name.orEmpty(),
     defaultBranch = defaultBranch.orEmpty(),
@@ -35,83 +39,81 @@ fun org.gitlab4j.api.models.Project.toApiModel(): Project = Project(
     description = description,
 )
 
-fun org.gitlab4j.api.models.Namespace?.toApiModel(): Namespace = Namespace(
+fun GitLabNamespace?.toApiModel(): Namespace = Namespace(
     id = ((this?.id) ?: 0L).toInt(),
     name = this?.name.orEmpty(),
     path = this?.path.orEmpty(),
 )
 
-fun org.gitlab4j.api.models.Pipeline.toApiModel(): Pipeline = Pipeline(
+fun GitLabPipeline.toApiModel(): Pipeline = Pipeline(
     id = (id ?: 0L).toInt(),
     projectId = (projectId ?: 0L).toInt(),
-    status = status.toApiModel(),
+    status = status.toApiStatus(),
     source = source.toApiModel(),
     ref = ref.orEmpty(),
     sha = sha.orEmpty(),
     webUrl = safeUri(webUrl),
-    updatedAt = updatedAt.toInstantOrEpoch(),
-    createdAt = createdAt.toInstantOrEpoch(),
+    updatedAt = updatedAt ?: Instant.EPOCH,
+    createdAt = createdAt ?: Instant.EPOCH,
     coverage = coverage?.toBigDecimalOrNull(),
 )
 
-fun org.gitlab4j.api.models.Job.toApiModel(): Job = Job(
+fun GitLabJob.toApiModel(): Job = Job(
     id = (id ?: 0L).toInt(),
-    commit = (commit ?: org.gitlab4j.api.models.Commit()).toApiModel(),
+    commit = (commit ?: GitLabCommit()).toApiModel(),
     allowFailure = allowFailure ?: false,
-    createdAt = createdAt.toInstantOrEpoch(),
+    createdAt = createdAt ?: Instant.EPOCH,
     name = name.orEmpty(),
-    pipeline = (pipeline ?: org.gitlab4j.api.models.Pipeline()).toApiModel(),
+    pipeline = (pipeline ?: GitLabPipeline()).toApiModel(),
     ref = ref.orEmpty(),
     stage = stage.orEmpty(),
-    status = status.toApiModel(),
+    status = status.toApiStatus(),
     webUrl = safeUri(webUrl),
     user = user.toApiModel(),
 )
 
-fun org.gitlab4j.api.models.Branch.toApiModel(): Branch = Branch(
+fun GitLabBranch.toApiModel(): Branch = Branch(
     name = name.orEmpty(),
     merged = merged ?: false,
-    `protected` = `protected` ?: false,
-    default = default ?: false,
+    `protected` = isProtected ?: false,
+    default = isDefault ?: false,
     canPush = canPush ?: false,
     webUrl = safeUri(webUrl),
-    commit = (commit ?: org.gitlab4j.api.models.Commit()).toApiModel(),
+    commit = (commit ?: GitLabCommit()).toApiModel(),
     pipeline = null,
 )
 
-fun PipelineSchedule.toApiModel(): Schedule = Schedule(
+fun GitLabSchedule.toApiModel(): Schedule = Schedule(
     id = (id ?: 0L).toInt(),
     description = description.orEmpty(),
     ref = ref.orEmpty(),
     cron = cron.orEmpty(),
     cronTimezone = cronTimezone.orEmpty(),
-    nextRunAt = nextRunAt.toInstantOrEpoch(),
+    nextRunAt = nextRunAt ?: Instant.EPOCH,
     active = active ?: false,
-    createdAt = createdAt.toInstantOrEpoch(),
-    updatedAt = updatedAt.toInstantOrEpoch(),
+    createdAt = createdAt ?: Instant.EPOCH,
+    updatedAt = updatedAt ?: Instant.EPOCH,
     owner = owner.toApiModel(),
 )
 
-fun org.gitlab4j.api.models.Commit.toApiModel(): Commit = Commit(
+fun GitLabCommit.toApiModel(): Commit = Commit(
     id = id.orEmpty(),
     authorName = authorName.orEmpty(),
     committerName = committerName.orEmpty(),
-    committedDate = committedDate.toInstantOrEpoch(),
+    committedDate = committedDate ?: Instant.EPOCH,
     title = title.orEmpty(),
     message = message.orEmpty(),
 )
 
-fun AbstractUser<*>?.toApiModel(): User = User(
+fun GitLabUser?.toApiModel(): User = User(
     id = ((this?.id) ?: 0L).toInt(),
     username = this?.username.orEmpty(),
     name = this?.name.orEmpty(),
     state = this?.state.orEmpty(),
-    isAdmin = (this as? org.gitlab4j.api.models.User)?.isAdmin ?: false,
+    isAdmin = this?.isAdmin ?: false,
 )
 
-fun PipelineStatus?.toApiModel(): Status = mapStatus(this?.toValue())
-
-fun JobStatus?.toApiModel(): Status = mapStatus(this?.toValue())
+fun String?.toApiStatus(): Status = mapStatus(this)
 
 fun String?.toApiModel(): Source {
     val value = this?.trim().orEmpty()
@@ -125,8 +127,6 @@ fun mapStatus(value: String?): Status {
     }
     return runCatching { Status.forValue(normalized.orEmpty()) }.getOrDefault(Status.CREATED)
 }
-
-private fun Date?.toInstantOrEpoch(): Instant = this?.toInstant() ?: Instant.EPOCH
 
 private fun safeUri(value: String?): URI = runCatching {
     URI.create(value ?: "about:blank")

@@ -1,18 +1,18 @@
 package larscom.gitlab.ci.dashboard.mapping
 
-import org.gitlab4j.api.GitLabApiException
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
+import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.server.ResponseStatusException
 
-fun toResponseStatusException(exception: GitLabApiException): ResponseStatusException {
-    val status = HttpStatus.resolve(exception.httpStatus) ?: HttpStatus.INTERNAL_SERVER_ERROR
-    return ResponseStatusException(status, exception.message, exception)
+fun toResponseStatusException(exception: RestClientResponseException): ResponseStatusException {
+    val reason = exception.responseBodyAsString.takeIf { it.isNotBlank() } ?: exception.statusText
+    return ResponseStatusException(HttpStatusCode.valueOf(exception.statusCode.value()), reason, exception)
 }
 
 inline fun <T> runGitLabCall(block: () -> T): T {
     return try {
         block()
-    } catch (exception: GitLabApiException) {
+    } catch (exception: RestClientResponseException) {
         throw toResponseStatusException(exception)
     }
 }

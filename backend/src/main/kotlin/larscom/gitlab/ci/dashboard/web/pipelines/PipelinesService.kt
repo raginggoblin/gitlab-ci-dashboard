@@ -1,8 +1,5 @@
 package larscom.gitlab.ci.dashboard.web.pipelines
 
-import org.gitlab4j.api.GitLabApi
-import org.gitlab4j.api.models.PipelineFilter
-import org.gitlab4j.models.Constants
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -14,15 +11,15 @@ import larscom.gitlab.ci.dashboard.api.model.Source
 import larscom.gitlab.ci.dashboard.api.model.StartPipelineRequest
 import larscom.gitlab.ci.dashboard.config.CacheNames
 import larscom.gitlab.ci.dashboard.config.DashboardProperties
+import larscom.gitlab.ci.dashboard.gitlab.GitLabClient
 import larscom.gitlab.ci.dashboard.mapping.runGitLabCall
 import larscom.gitlab.ci.dashboard.mapping.toApiModel
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.Date
 
 @Service
 class PipelinesService(
-    private val gitLabApi: GitLabApi,
+    private val gitLabClient: GitLabClient,
     private val properties: DashboardProperties,
 ) {
     private val logger = LoggerFactory.getLogger(PipelinesService::class.java)
@@ -33,7 +30,7 @@ class PipelinesService(
         verifyWritable("can't cancel pipeline when in 'read only' mode")
 
         return runGitLabCall {
-            gitLabApi.pipelineApi.cancelPipelineJobs(projectId, pipelineId.toLong()).toApiModel()
+            gitLabClient.cancelPipeline(projectId, pipelineId).toApiModel()
         }
     }
 
@@ -44,11 +41,10 @@ class PipelinesService(
     fun getPipelines(projectId: Int, source: Source?): List<Pipeline> {
         logger.debug("Pipelines service call: get pipelines projectId={} source={}", projectId, source)
 
-        val updatedAfter = Date.from(Instant.now().minus(properties.pipelineHistoryDays, ChronoUnit.DAYS))
-        val filter = PipelineFilter().withUpdatedAfter(updatedAfter)
+        val updatedAfter = Instant.now().minus(properties.pipelineHistoryDays, ChronoUnit.DAYS)
 
         return runGitLabCall {
-            val pipelines = gitLabApi.pipelineApi.getPipelines(projectId, filter).map { it.toApiModel() }
+            val pipelines = gitLabClient.getPipelines(projectId, updatedAfter).map { it.toApiModel() }
             if (source == null) {
                 pipelines
             } else {
@@ -63,7 +59,7 @@ class PipelinesService(
         verifyWritable("can't retry pipeline when in 'read only' mode")
 
         return runGitLabCall {
-            gitLabApi.pipelineApi.retryPipelineJob(projectId, pipelineId.toLong()).toApiModel()
+            gitLabClient.retryPipeline(projectId, pipelineId).toApiModel()
         }
     }
 
@@ -73,7 +69,7 @@ class PipelinesService(
         verifyWritable("can't start a new pipeline when in 'read only' mode")
 
         return runGitLabCall {
-            gitLabApi.pipelineApi
+            gitLabClient
                 .createPipeline(request.projectId, request.branch, request.envVars ?: emptyMap())
                 .toApiModel()
         }
@@ -81,17 +77,8 @@ class PipelinesService(
 
     @Cacheable(cacheNames = [CacheNames.PIPELINES], key = "#projectId + ':latest:' + #branch")
     fun getLatestPipeline(projectId: Int, branch: String): Pipeline? {
-        val filter = PipelineFilter()
-            .withRef(branch)
-            .withOrderBy(Constants.PipelineOrderBy.UPDATED_AT)
-            .withSort(Constants.SortOrder.DESC)
-
         return runGitLabCall {
-            gitLabApi.pipelineApi
-                .getPipelines(projectId, filter, 1)
-                .first()
-                .firstOrNull()
-                ?.toApiModel()
+            gitLabClient.getLatestPipeline(projectId, branch)?.toApiModel()
         }
     }
 

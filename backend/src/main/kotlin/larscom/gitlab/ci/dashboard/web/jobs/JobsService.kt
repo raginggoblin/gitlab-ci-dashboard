@@ -1,7 +1,5 @@
 package larscom.gitlab.ci.dashboard.web.jobs
 
-import org.gitlab4j.api.GitLabApi
-import org.gitlab4j.models.Constants
 import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.HttpStatus
@@ -9,11 +7,12 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import larscom.gitlab.ci.dashboard.api.model.Job
 import larscom.gitlab.ci.dashboard.config.CacheNames
+import larscom.gitlab.ci.dashboard.gitlab.GitLabClient
 import larscom.gitlab.ci.dashboard.mapping.runGitLabCall
 import larscom.gitlab.ci.dashboard.mapping.toApiModel
 
 @Service
-class JobsService(private val gitLabApi: GitLabApi) {
+class JobsService(private val gitLabClient: GitLabClient) {
     private val logger = LoggerFactory.getLogger(JobsService::class.java)
 
     @Cacheable(
@@ -29,18 +28,12 @@ class JobsService(private val gitLabApi: GitLabApi) {
     @Cacheable(cacheNames = [CacheNames.JOBS], key = "#projectId + ':' + #pipelineId + ':failed'")
     fun getFailedJobs(projectId: Int, pipelineId: Int): List<Job> {
         logger.debug("Jobs service call: get failed jobs projectId={} pipelineId={}", projectId, pipelineId)
-        return getJobs(projectId, pipelineId, listOf(Constants.JobScope.FAILED))
+        return getJobs(projectId, pipelineId, listOf("failed"))
     }
 
-    private fun getJobs(projectId: Int, pipelineId: Int, scopes: List<Constants.JobScope>): List<Job> {
+    private fun getJobs(projectId: Int, pipelineId: Int, scopes: List<String>): List<Job> {
         return runGitLabCall {
-            val jobs = if (scopes.isEmpty()) {
-                gitLabApi.jobApi.getJobsForPipeline(projectId, pipelineId.toLong())
-            } else {
-                scopes.flatMap { scope ->
-                    gitLabApi.jobApi.getJobsForPipeline(projectId, pipelineId.toLong(), scope)
-                }
-            }
+            val jobs = gitLabClient.getJobsForPipeline(projectId, pipelineId, scopes)
 
             jobs
                 .distinctBy { it.id }
@@ -49,17 +42,34 @@ class JobsService(private val gitLabApi: GitLabApi) {
         }
     }
 
-    private fun parseScopes(scope: String): List<Constants.JobScope> {
+    private fun parseScopes(scope: String): List<String> {
         if (scope.isBlank()) {
             return emptyList()
         }
 
+        val supportedScopes = setOf(
+            "created",
+            "pending",
+            "running",
+            "failed",
+            "success",
+            "canceled",
+            "skipped",
+            "manual",
+            "scheduled",
+            "waiting_for_resource",
+            "preparing",
+            "canceling",
+        )
+
         return scope
             .split(',')
-            .map { token -> token.trim() }
+            .map { token -> token.trim().lowercase() }
             .filter { token -> token.isNotBlank() }
             .map { token ->
-                runCatching { Constants.JobScope.forValue(token) }.getOrElse {
+                if (supportedScopes.contains(token)) {
+                    token
+                } else {
                     throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Unsupported job scope: $token")
                 }
             }
